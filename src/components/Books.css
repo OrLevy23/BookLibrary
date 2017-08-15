@@ -1,0 +1,7 @@
+.dialogDiv {
+  display: flex;
+  flex: column;
+}
+.dialogDivider {
+    margin-top: 4px;
+  }
