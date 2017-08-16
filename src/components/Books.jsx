@@ -103,6 +103,13 @@ class Books extends Component {
     const showAddBookDialog = !this.state.showAddBookDialog;
     this.setState({ showAddBookDialog });
   }
+
+   S4() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+  }
+  generateGuid () {
+    (this.S4() + this.S4() + "-" + this.S4() + "-4" + this.S4().substr(0,3) + "-" + this.S4() + "-" + this.S4() + this.S4() + this.S4()).toLowerCase();
+  }
   saveNewBook() {
     let { books } = this.state;
     let newBook = {volumeInfo: {}};
@@ -110,6 +117,7 @@ class Books extends Component {
       newBook.volumeInfo.title = this.state.title;
       newBook.volumeInfo.publishedDate = this.state.date;
       newBook.volumeInfo.authors = this.state.authors;
+      newBook.id = this.generateGuid();
       books.push(newBook);
       this.setState({
          title: "",
@@ -157,7 +165,7 @@ class Books extends Component {
         let publishedDate = book.volumeInfo.publishedDate;
         return (
         
-          <div>
+          <div key={id}>
             {
               this.state.showAddBookDialog ?
           <CustomModal title={"Add New Book"} body={
@@ -180,7 +188,7 @@ class Books extends Component {
 
             }
            { this.state.showDeleteDialog ? 
-            <CustomModal title={"Delete"} body={"Are you sure you want to delete  ?"} footer={
+            <CustomModal  key={id} title={"Delete"} body={"Are you sure you want to delete  ?"} footer={
               <div>
                 <Button onClick={this.removeDialog}> Keep</Button>
                 <Button onClick={(()=> {this.deleteRecord(book)})}> Delete</Button>
@@ -196,7 +204,7 @@ class Books extends Component {
                 <Col xs={8} md={8} lg={8}>
 
                 {this.state.edit && this.state.edit[idx] ?
-                  <CustomModal title={"Edit"} body={
+                  <CustomModal key={id} title={"Edit"} body={
                     <div className={styles.dialogDiv}>
                       {this.state.valid ? <span style="color:red"> author name is not valid </span> : ""}
                       <span> Title: </span> <input  type="text" placeholder={title} onChange={((e) => {this.updateTitle(e)})} /> <br/>
